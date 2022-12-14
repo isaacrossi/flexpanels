@@ -17,6 +17,7 @@
     
     body {
       margin: 0;
+      overflow: hidden;
     }
     
     *, *:before, *:after {
@@ -31,11 +32,14 @@
     }
 
     .panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      text-align: center;
+      align-items: center;
       background: #6B0F9C;
       box-shadow: inset 0 0 0 5px rgba(255,255,255,0.1);
       color: white;
-      text-align: center;
-      align-items: center;
       /* Safari transitionend event.propertyName === flex */
       /* Chrome + FF transitionend event.propertyName === flex-grow */
       transition:
@@ -45,7 +49,8 @@
       font-size: 20px;
       background-size: cover;
       background-position: center;
-      width: 20%;
+      flex: 1;
+      /* width: 300% */
     }
 
     .panel1 { background-image:url(https://source.unsplash.com/gYl-UtwNg_I/1500x1500); }
@@ -59,6 +64,10 @@
       margin: 0;
       width: 100%;
       transition: transform 0.5s;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex: 1;
     }
 
     .panel p {
@@ -66,14 +75,41 @@
       font-family: 'Amatic SC', cursive;
       text-shadow: 0 0 4px rgba(0, 0, 0, 0.72), 0 0 14px rgba(0, 0, 0, 0.45);
       font-size: 2em;
+      border: red 2px solid;
+    }
+
+    /* .panel p:nth-child(1) {
+      position: absolute;
+      transform: translateY(-100%);
+    } */
+    .panel > *:first-child {
+      transform: translateY(-100%);
     }
     
+    .panel.open-active  > *:first-child{
+      transform: translateY(0);
+    }
+
     .panel p:nth-child(2) {
       font-size: 4em;
     }
 
+    .panel > *:nth-child(3) {
+      transform: translateY(100%);
+    }
+
+    .panel.open-active > *:nth-child(3) {
+      transform: translateY(0);
+    }
+
+    /* .panel p:nth-child(3) {
+      position: absolute;
+      transform: translateY(100%);
+    } */
+
     .panel.open {
       font-size: 40px;
+      flex: 3;
     }
 
   </style>
@@ -108,7 +144,19 @@
   </div>
 
   <script>
+    const panels = document.querySelectorAll('.panel')
+    panels.forEach(panel => {
+      panel.addEventListener('click', (e) => {
+        panel.classList.toggle('open')
+      })
 
+      panel.addEventListener('transitionend', (e) => {
+        if (e.propertyName.includes('flex')) {
+          panel.classList.toggle('open-active')
+        }
+      })
+       
+    })
   </script>
 
 
